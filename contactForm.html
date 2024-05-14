@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <title>Contact Form</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#contactForm").submit(function(e) {
+        e.preventDefault();
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var phone = $("#phone").val(); // Optional
+        var message = $("#message").val();
+        
+        var data = {
+          "name": name,
+          "email": email,
+          "phone": phone,
+          "message": message
+        };
+        
+        $.ajax({
+          type: "POST",
+          url: "https://script.google.com/macros/s/AKfycbwMZVWVZgtnCQ15m6gXU4LAvF1zA6HRPANgePuTgZrm45b2CyTqiW4fja6P1aguu9gvgw/exec", // Replace with your deployed script URL
+          data: data,
+          success: function(response) {
+            $("#messageBox").html(response);
+            $("#contactForm")[0].reset(); // Clear form after successful submission
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error:", textStatus, errorThrown);
+            $("#messageBox").html("Error submitting form.");
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Contact Form</h1>
+  <form id="contactForm">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" required><br><br>
+    <label for="phone">Phone Number (Optional):</label><br>
+    <input type="tel" id="phone" name="phone"><br><br>
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="5" required></textarea><br><br>
+    <button type="submit">Submit</button>
+  </form>
+  <div id="messageBox"></div>  
+</body>
+</html>
